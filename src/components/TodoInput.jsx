@@ -1,7 +1,19 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 function TodoInput(props) {
   const [text, setText] = useState("");
+  const typingTimeout = useRef(null);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setText(value);
+    clearTimeout(typingTimeout.current);
+    typingTimeout.current = setTimeout(() => {
+      console.log("Debounced value", value);
+      //if we were to make a API call we coud have added here.
+      
+    }, 500);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,10 +28,7 @@ function TodoInput(props) {
       <input
         className="border p-2 flex-1"
         value={text}
-        onChange={(e) => {
-          console.log("Input changed", e.target.value);
-          setText(e.target.value);
-        }}
+        onChange={handleChange}
         placeholder="Enter todo…"
       />
       <button type="submit" className="border px-3">Add</button>
