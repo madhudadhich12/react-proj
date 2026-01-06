@@ -4,6 +4,7 @@ import { useAuth } from "./context/AuthContext";
 import TodoWrapper from "./components/TodoWrapper";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
 
 export default function App() {
   const { isAuthenticated } = useAuth();
@@ -29,6 +30,17 @@ export default function App() {
         element={
           isAuthenticated ? (
             <TodoWrapper />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          isAuthenticated ? (
+            <Profile />
           ) : (
             <Navigate to="/login" replace />
           )

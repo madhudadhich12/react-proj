@@ -94,12 +94,21 @@ export default function TodoWrapper() {
             ToDo List
           </h1>
 
-          <button
-            onClick={handleLogout}
-            className="bg-gray-700 text-white px-3 py-1.5 rounded-lg hover:bg-gray-800"
-          >
-            Logout
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate("/profile")}
+              className="bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700"
+            >
+              Profile
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="bg-gray-700 text-white px-3 py-1.5 rounded-lg hover:bg-gray-800"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         {todos.length > 0 && (
