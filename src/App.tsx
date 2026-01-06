@@ -1,3 +1,17 @@
+/**
+ * App.tsx
+ *
+ * Application routing definitions and simple auth-based redirects.
+ * Uses `useAuth()` to check `isAuthenticated` and conditionally render
+ * pages or `Navigate` redirects.
+ *
+ * Notes:
+ * - Public routes: `/login`, `/signup` (both redirect to `/todos` if already authenticated)
+ * - Protected routes: `/todos`, `/profile` (redirect to `/login` when not authenticated)
+ * - Root `/` redirects based on authentication status
+ * - A `ProtectedRoute` component exists in the codebase and can be used to centralize guarding logic
+ */
+
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
@@ -11,6 +25,7 @@ export default function App() {
 
   return (
     <Routes>
+      {/* Login page: if already signed in, redirect to /todos */}
       <Route
         path="/login"
         element={
@@ -18,6 +33,7 @@ export default function App() {
         }
       />
 
+      {/* Signup page: if already signed in, redirect to /todos */}
       <Route
         path="/signup"
         element={
@@ -25,6 +41,7 @@ export default function App() {
         }
       />
 
+      {/* Todos page: protected — only accessible when authenticated */}
       <Route
         path="/todos"
         element={
@@ -36,6 +53,7 @@ export default function App() {
         }
       />
 
+      {/* Profile page: protected — only accessible when authenticated */}
       <Route
         path="/profile"
         element={
@@ -47,6 +65,7 @@ export default function App() {
         }
       />
 
+      {/* Root path: redirect to /todos for authenticated users, otherwise to /login */}
       <Route
         path="/"
         element={
@@ -58,6 +77,7 @@ export default function App() {
         }
       />
 
+      {/* Fallback: redirect unknown paths to root */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

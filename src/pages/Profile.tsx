@@ -1,10 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+// Profile page
+// - Reads the current `user` from AuthContext and displays user info (name, email, id)
+// - Provides a simple "Back" button that navigates to the todos list
+// - If there is no user (not authenticated), it returns an early placeholder
 export default function Profile() {
+  // Get authenticated user from context
   const { user } = useAuth();
+  // Router navigation helper (used by the Back button)
   const navigate = useNavigate();
 
+  // Guard: if no user is available, show a centered placeholder message
   if (!user) {
     return (
       <div className="w-full min-h-screen flex items-center justify-center">
@@ -13,9 +20,11 @@ export default function Profile() {
     );
   }
 
+  // Main profile layout: centered card with Name, Email, and User ID
   return (
     <div className="w-full min-h-screen px-4 sm:px-6 md:px-8 bg-gray-50 flex justify-center bg-gradient-to-b from-rose-50 via-orange-50 to-amber-50">
       <div className="w-full max-w-2xl">
+        {/* Header with title and back navigation button */}
         <div className="flex justify-between items-center mb-4 mt-4">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">Profile</h1>
           <button
@@ -26,6 +35,7 @@ export default function Profile() {
           </button>
         </div>
 
+        {/* Card showing user details */}
         <div className="bg-white shadow rounded-lg p-6">
           <div className="mb-4">
             <h2 className="text-sm font-medium text-gray-500">Name</h2>
