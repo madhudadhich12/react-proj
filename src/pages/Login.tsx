@@ -80,6 +80,12 @@ export default function Login() {
       >
         Create an account
       </button>
+
+      <button
+        className="bg-green-600 text-white px-3 py-2"
+        onClick={() => navigate("/dummy")}>
+          Dummy
+      </button>
     </div>
   );
 }

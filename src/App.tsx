@@ -19,12 +19,16 @@ import TodoWrapper from "./components/TodoWrapper";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
+import DummyPage from "./pages/DummyPage";
 
 export default function App() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   return (
     <Routes>
+      {/* Implementation for Promise.All */}
+      <Route path = "/dummy" element = {<DummyPage/>} />
+
       {/* Login page: if already signed in, redirect to /todos */}
       <Route
         path="/login"

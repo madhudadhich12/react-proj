@@ -1,4 +1,4 @@
-import ProtectedRoute from "../components/ProtectedRoute";
+/*import ProtectedRoute from "../components/ProtectedRoute";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import App from "../App";
@@ -16,5 +16,5 @@ export const routes = [
   //   ),
   // },
   // { path: "/", element: <Navigate to="/login" replace /> },
-  { path: "/", element: <App />}
+  { path: "/", element: <App />}*/
 ];
