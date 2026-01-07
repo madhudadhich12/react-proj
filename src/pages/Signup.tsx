@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuthStore } from "../stores/authStore";
 
 // Shape of the signup form data managed in component state
 type SignupForm = {
@@ -9,14 +9,10 @@ type SignupForm = {
   password: string;
 };
 
-// Signup page component
-// - Manages local form state (name/email/password)
-// - Calls `signupUser` from auth context when the form is submitted
-// - Generates a user id with `crypto.randomUUID()` to include in the user object
-// - Navigates to `/todos` on successful signup and displays an error message on failure
+
 export default function Signup() {
-  // Auth context helper used to register a new user
-  const { signupUser } = useAuth();
+  // Auth store helper used to register a new user
+  const signupUser = useAuthStore((s) => s.signupUser);
   // Router navigation helper
   const navigate = useNavigate();
 

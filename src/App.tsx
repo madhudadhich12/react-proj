@@ -13,7 +13,7 @@
  */
 
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
+import { useAuthStore } from "./stores/authStore";
 
 import TodoWrapper from "./components/TodoWrapper";
 import Login from "./pages/Login";
@@ -21,7 +21,7 @@ import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 
 export default function App() {
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   return (
     <Routes>

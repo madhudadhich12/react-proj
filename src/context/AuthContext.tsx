@@ -17,7 +17,7 @@
  *   remote auth or show loading/error states inside the context.
  */
 
-import { createContext, useContext, useState, useEffect } from "react";
+/*import { createContext, useContext, useState, useEffect } from "react";
 import { getSessionUser, login, signup, logout, SessionUser } from "../services/authService";
 
 type AuthContextType = {
@@ -90,3 +90,4 @@ export function useAuth() {
   if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
   return ctx;
 }
+*/

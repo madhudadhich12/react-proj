@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuthStore } from "../stores/authStore";
 
 // Shape of the login form data managed in component state
 type LoginForm = {
@@ -10,11 +10,11 @@ type LoginForm = {
 
 // Login page component
 // - Manages local form state (email/password)
-// - Calls `loginUser` from auth context when the form is submitted
+// - Calls `loginUser` from auth store when the form is submitted
 // - Navigates to `/todos` on successful login, and shows an error message on failure
 export default function Login() {
-  // auth helper from context provides `loginUser` (performs authentication)
-  const { loginUser } = useAuth();
+  // auth helper from store provides `loginUser` (performs authentication)
+  const loginUser = useAuthStore((s) => s.loginUser);
   // router navigation helper
   const navigate = useNavigate();
 

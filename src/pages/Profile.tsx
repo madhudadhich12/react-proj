@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuthStore } from "../stores/authStore";
 
 // Profile page
-// - Reads the current `user` from AuthContext and displays user info (name, email, id)
+// - Reads the current `user` from the auth store and displays user info (name, email, id)
 // - Provides a simple "Back" button that navigates to the todos list
 // - If there is no user (not authenticated), it returns an early placeholder
 export default function Profile() {
-  // Get authenticated user from context
-  const { user } = useAuth();
+  // Get authenticated user from store
+  const user = useAuthStore((s) => s.user);
   // Router navigation helper (used by the Back button)
   const navigate = useNavigate();
 
