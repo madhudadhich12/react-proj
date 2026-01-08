@@ -35,27 +35,27 @@ export default function TodoItem({
 
   return (
     <>
-      <li className="flex flex-wrap justify-between items-start gap-2 px-3 py-2 mt-2 rounded-lg border bg-white hover:shadow-sm transition">
-        <div className="flex gap-2 items-center flex-1 min-w-0">
+      <li className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 mb-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-200">
+        <div className="flex items-start gap-3 flex-1 w-full">
           <input
             type="checkbox"
-            className="w-4 h-4 accent-pink-600"
+            className="mt-1 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer accent-blue-600 transition-colors"
             checked={todo.completed}
             onChange={() => toggleTodo(todo.id)}
           />
 
           <span
-            className={
-              (todo.completed ? "line-through text-gray-500 " : "") +
-              "whitespace-pre-wrap break-all flex-1 min-w-0"
-            }
+            className={`text-base flex-1 break-words transition-colors duration-200 ${todo.completed
+              ? "text-gray-400 line-through decoration-gray-300"
+              : "text-gray-700 font-medium"
+              }`}
           >
             {todo.text}
           </span>
         </div>
 
-        <div className="basis-full sm:basis-auto w-full sm:w-auto flex flex-row gap-2 mt-2 sm:mt-0">
-          <ActionButton variant="primary" onClick={() => setIsEditing(true)}>
+        <div className="flex items-center gap-2 self-end sm:self-auto opacity-100 transition-opacity duration-200">
+          <ActionButton variant="primary" onClick={() => setIsEditing(true)} className="hover:bg-red-100">
             Edit
           </ActionButton>
 
@@ -66,22 +66,25 @@ export default function TodoItem({
       </li>
 
       {isEditing && (
-        <Modal title="Edit Todo" onClose={() => setIsEditing(false)}>
-          <textarea
-            ref={inputRef}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="border p-2 w-full rounded mb-4 resize-none"
-            rows={3}
-          />
+        <Modal title="Edit Task" onClose={() => setIsEditing(false)}>
+          <div className="mt-2">
+            <textarea
+              ref={inputRef}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 placeholder-gray-400 sm:text-sm"
+              rows={4}
+              placeholder="What needs to be done?"
+            />
+          </div>
 
-          <div className="flex justify-end gap-2">
+          <div className="mt-4 flex justify-end gap-3">
             <ActionButton variant="danger" onClick={() => setIsEditing(false)}>
               Cancel
             </ActionButton>
 
             <ActionButton variant="primary" onClick={handleSave}>
-              Save
+              Save Changes
             </ActionButton>
           </div>
         </Modal>

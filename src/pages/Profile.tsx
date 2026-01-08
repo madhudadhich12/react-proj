@@ -14,40 +14,85 @@ export default function Profile() {
   // Guard: if no user is available, show a centered placeholder message
   if (!user) {
     return (
-      <div className="w-full min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">No user data.</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="text-center">
+          <p className="text-gray-500 text-lg">No user data found.</p>
+          <button
+            onClick={() => navigate("/login")}
+            className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+          >
+            Go to Login
+          </button>
+        </div>
       </div>
     );
   }
 
-  // Main profile layout: centered card with Name, Email, and User ID
+  // Helper to get initials
+  const initials = user.name
+    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    : "U";
+
   return (
-    <div className="w-full min-h-screen px-4 sm:px-6 md:px-8 bg-gray-50 flex justify-center bg-gradient-to-b from-rose-50 via-orange-50 to-amber-50">
-      <div className="w-full max-w-2xl">
-        {/* Header with title and back navigation button */}
-        <div className="flex justify-between items-center mb-4 mt-4">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">Profile</h1>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto space-y-6">
+        {/* Header with Back button */}
+        <div className="flex items-center justify-between">
           <button
             onClick={() => navigate("/todos")}
-            className="bg-gray-700 text-white px-3 py-1.5 rounded-lg hover:bg-gray-800"
+            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
           >
-            Back
+            <span className="mr-2">←</span> Back to Dashboard
           </button>
         </div>
 
-        {/* Card showing user details */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <div className="mb-4">
-            <h2 className="text-sm font-medium text-gray-500">Name</h2>
-            <p className="text-lg font-semibold text-gray-800">{user.name}</p>
-          </div>
-          <div className="mb-4">
-            <h2 className="text-sm font-medium text-gray-500">Email</h2>
-            <p className="text-lg font-semibold text-gray-800">{user.email}</p>
-          </div>
-          <div>
-            <h2 className="text-sm font-medium text-gray-500">User ID</h2>
-            <p className="text-sm text-gray-600">{user.id}</p>
+        {/* Profile Card */}
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* Header / Banner area */}
+          <div className="h-32 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+
+          <div className="relative px-6 pb-6">
+            {/* Avatar - positioned to overlap banner */}
+            <div className="absolute -top-12 left-6 sm:left-10">
+              <div className="h-24 w-24 rounded-full bg-white p-1 shadow-md">
+                <div className="h-full w-full rounded-full bg-blue-100 flex items-center justify-center text-blue-700 text-3xl font-bold">
+                  {initials}
+                </div>
+              </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="pt-16 sm:pl-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">{user.name}</h1>
+                  <p className="text-sm text-gray-500">{user.email}</p>
+                </div>
+                <span className="mt-2 sm:mt-0 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  Active ID: {user.id}
+                </span>
+              </div>
+
+              <div className="mt-8 border-t border-gray-100 pt-6">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                  User Information
+                </h3>
+                <dl className="mt-4 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Full Name</dt>
+                    <dd className="mt-1 text-sm text-gray-900 font-semibold">{user.name}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">Email Address</dt>
+                    <dd className="mt-1 text-sm text-gray-900 font-semibold">{user.email}</dd>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <dt className="text-sm font-medium text-gray-500">Account ID</dt>
+                    <dd className="mt-1 text-sm text-gray-900 font-mono bg-gray-50 p-2 rounded">{user.id}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
           </div>
         </div>
       </div>

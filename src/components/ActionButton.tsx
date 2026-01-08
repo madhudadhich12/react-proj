@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-type ButtonVariant = "primary" | "danger";
+type ButtonVariant = "primary" | "danger" | "secondary";
 
 type ActionButtonProps = {
   children: ReactNode;
@@ -22,13 +22,14 @@ export default function ActionButton({
   const base =
     "inline-flex items-center justify-center " +
     "px-4 py-2 sm:px-5 sm:py-2.5 text-sm sm:text-[15px] font-medium tracking-tight " +
-    "rounded-2xl select-none transition-all duration-200 " +
-    "shadow-sm hover:shadow-md hover:-translate-y-[1px] active:translate-y-0 " +
-    "focus:outline-none focus:ring-2 focus:ring-rose-200";
+    "rounded-xl border transition-all duration-200 select-none " +
+    "shadow-sm   active:translate-y-px " +
+    "focus:outline-none focus:ring-2 focus:ring-offset-1";
 
   const variants: Record<ButtonVariant, string> = {
-    primary: "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700",
-    danger: "bg-red-500 text-white hover:bg-red-600 active:bg-red-700",
+    primary: "border-transparent bg-blue-600 text-white  focus:ring-blue-500",
+    danger: "border-transparent bg-red-600 text-white  focus:ring-red-500",
+    secondary: "border-gray-300 bg-white text-gray-700  focus:ring-gray-500",
   };
 
   const disabledStyle =

@@ -114,14 +114,14 @@ export default function DummyPage() {
 
             {/* small preview instead of huge JSON */}
             <pre className={resultBox}>
-{JSON.stringify(
-  {
-    firstUser: users[0]?.name,
-    firstPost: posts[0]?.title,
-  },
-  null,
-  2
-)}
+              {JSON.stringify(
+                {
+                  firstUser: users[0]?.name,
+                  firstPost: posts[0]?.title,
+                },
+                null,
+                2
+              )}
             </pre>
           </div>
         )}

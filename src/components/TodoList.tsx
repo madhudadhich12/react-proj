@@ -29,14 +29,18 @@ export default function TodoList({
   // If there are no todos, show a helpful empty state message
   if (todos.length === 0)
     return (
-      <p className="text-center mt-6 text-gray-400 italic">
-        No todos yet — add your first task 😊
-      </p>
+      <div className="text-center py-12 px-4 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
+        <div className="text-4xl mb-3">📝</div>
+        <h3 className="mt-2 text-sm font-medium text-gray-900">No tasks yet</h3>
+        <p className="mt-1 text-sm text-gray-500">
+          Get started by creating a new task above!
+        </p>
+      </div>
     );
 
   // Render a list of TodoItem components, providing the necessary handlers
   return (
-    <ul className="mt-4">
+    <ul role="list" className="space-y-3">
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}

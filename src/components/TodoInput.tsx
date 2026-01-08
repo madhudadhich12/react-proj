@@ -1,55 +1,4 @@
-/*import { useState, useRef } from "react";
-import ActionButton from "./ActionButton";
 
-function TodoInput({addTodo, clearTodos}) {
-  const [text, setText] = useState("");
-  const typingTimeout = useRef(null);
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setText(value);
-    clearTimeout(typingTimeout.current);
-    typingTimeout.current = setTimeout(() => {
-      console.log("Debounced value", value);
-      //if we were to make a API call we coud have added here.
-      
-    }, 500);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!text.trim()) return;
-    addTodo(text);
-    setText("");
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 mt-4">
-      <input
-        className="
-        w-full sm:flex-1
-        px-3 py-2 sm:py-2
-        border rounded-lg
-        focus:ring-2 focus:ring-blue-400 focus:border-blue-400
-        outline-none transition bg-gray-50
-        text-sm sm:text-base"
-        value={text}
-        onChange={handleChange}
-        placeholder="Enter todo…"
-      />
-     <ActionButton type="submit" variant="primary">
-        Add
-      </ActionButton>
-
-      <ActionButton variant="danger" onClick={clearTodos}>
-        Clear All
-      </ActionButton>
-    </form> 
-  );
-}
-
-export default TodoInput;
-*/
 
 import { useState, useRef } from "react";
 import ActionButton from "./ActionButton";
@@ -84,16 +33,17 @@ function TodoInput({ addTodo, clearTodos }: TodoInputProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col sm:flex-row gap-2 mt-4"
+      className="flex flex-col sm:flex-row gap-3 mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100 shadow-inner"
     >
       {/* Input */}
       <input
-        className="w-full sm:flex-1 px-3 py-2 border rounded-lg
-                   focus:ring-2 focus:ring-blue-400 focus:border-blue-400
-                   outline-none transition bg-gray-50"
+        className="w-full sm:flex-1 px-4 py-3 border border-gray-200 rounded-lg
+                   focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   outline-none transition-all duration-200 bg-white placeholder-gray-400
+                   text-gray-900 text-base shadow-sm"
         value={text}
         onChange={handleChange}
-        placeholder="Enter todo…"
+        placeholder="What needs to be done?"
       />
 
       {/* Button group */}
@@ -101,17 +51,17 @@ function TodoInput({ addTodo, clearTodos }: TodoInputProps) {
         <ActionButton
           type="submit"
           variant="primary"
-          className="flex-1 sm:flex-none"
+          className="flex-1 sm:flex-none w-full sm:w-auto justify-center"
         >
-          Add
+          Add Task
         </ActionButton>
 
         <ActionButton
-          variant="danger"
+          variant="secondary"
           onClick={clearTodos}
-          className="flex-1 sm:flex-none"
+          className="flex-1 sm:flex-none w-full sm:w-auto justify-center"
         >
-          Clear All
+          Clear
         </ActionButton>
       </div>
     </form>

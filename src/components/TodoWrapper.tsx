@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import TodoInput from "../components/TodoInput";
 import TodoList from "../components/TodoList";
+import ConfirmationModal from "../components/ConfirmationModal";
 import { Todo } from "../type/todo";
 
 import { useAuthStore } from "../stores/authStore";
@@ -24,6 +25,13 @@ export default function TodoWrapper() {
 
   // Local state of todos for this user
   const [todos, setTodos] = useState<Todo[]>([]);
+
+  // State for confirmation modal
+  const [confirmationModal, setConfirmationModal] = useState<{
+    isOpen: boolean;
+    type: 'delete' | 'clear' | null;
+    id?: string;
+  }>({ isOpen: false, type: null });
 
   // When `user` changes (login/logout), load that user's todos from storage
   useEffect(() => {
@@ -70,13 +78,18 @@ export default function TodoWrapper() {
     });
   }, []);
 
-  // Delete a todo by id and persist the updated list
-  const deleteTodo = useCallback((id: string) => {
+  // Actual delete logic
+  const performDelete = useCallback((id: string) => {
     setTodos((prev) => {
       const updated = prev.filter((t) => t.id !== id);
       saveTodos(updated);
       return updated;
     });
+  }, []);
+
+  // Wrapper to trigger modal
+  const deleteTodo = useCallback((id: string) => {
+    setConfirmationModal({ isOpen: true, type: 'delete', id });
   }, []);
 
   // Update the text of a todo and persist
@@ -90,10 +103,29 @@ export default function TodoWrapper() {
     });
   }, []);
 
-  // Clear all todos (state + persisted storage)
-  const clearTodos = useCallback(() => {
+  // Actual clear logic
+  const performClear = useCallback(() => {
     setTodos([]);
     saveTodos([]);
+  }, []);
+
+  // Wrapper to trigger modal
+  const clearTodos = useCallback(() => {
+    setConfirmationModal({ isOpen: true, type: 'clear' });
+  }, []);
+
+  // Handle modal confirmation
+  const handleConfirm = useCallback(() => {
+    if (confirmationModal.type === 'delete' && confirmationModal.id) {
+      performDelete(confirmationModal.id);
+    } else if (confirmationModal.type === 'clear') {
+      performClear();
+    }
+    setConfirmationModal({ isOpen: false, type: null });
+  }, [confirmationModal, performDelete, performClear]);
+
+  const handleCancel = useCallback(() => {
+    setConfirmationModal({ isOpen: false, type: null });
   }, []);
 
   // Derived value: count of completed todos
@@ -103,49 +135,77 @@ export default function TodoWrapper() {
   );
 
   return (
-    <div className="w-full min-h-screen px-4 sm:px-6 md:px-8 bg-gray-50 flex justify-center bg-gradient-to-b from-rose-50 via-orange-50 to-amber-50">
-      <div className="w-full max-w-2xl">
-        {/* Header with Logout and Profile buttons */}
-        <div className="flex justify-between items-center mb-2 mt-4">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">
-            ToDo List
-          </h1>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-8">
 
-          <div className="flex items-center gap-2">
-            {/* Navigate to user profile */}
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-200 pb-6">
+          <div>
+            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+              My Tasks
+            </h1>
+            <p className="mt-1 text-sm text-gray-500">
+              Manage your daily goals and functionality
+            </p>
+          </div>
+
+          <div className="mt-4 sm:mt-0 flex items-center space-x-3">
+            {/* Profile Button */}
             <button
               onClick={() => navigate("/profile")}
-              className="bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
             >
               Profile
             </button>
 
-            {/* Log out the current user */}
+            {/* Logout Button */}
             <button
               onClick={handleLogout}
-              className="bg-gray-700 text-white px-3 py-1.5 rounded-lg hover:bg-gray-800"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
             >
               Logout
             </button>
           </div>
         </div>
 
-        {/* Show completed count only when there are todos */}
-        {todos.length > 0 && (
-          <p className="text-center text-gray-500 mt-1 text-xs sm:text-sm">
-            Completed: {completedCount}
-          </p>
-        )}
+        {/* Stats & Content */}
+        <div className="space-y-6">
+          {/* Completion Status Pill */}
+          {todos.length > 0 && (
+            <div className="flex justify-end">
+              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${completedCount === todos.length ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+                }`}>
+                {completedCount} / {todos.length} Completed
+              </span>
+            </div>
+          )}
 
-        {/* Input form to add todos and a button to clear all todos */}
-        <TodoInput addTodo={addTodo} clearTodos={clearTodos} />
+          {/* Main Components */}
+          <div className="space-y-6">
+            <TodoInput addTodo={addTodo} clearTodos={clearTodos} />
+            <TodoList
+              todos={todos}
+              toggleTodo={toggleTodo}
+              deleteTodo={deleteTodo}
+              updateTodo={updateTodo}
+            />
+          </div>
+        </div>
 
-        {/* List of todos with handlers passed down */}
-        <TodoList
-          todos={todos}
-          toggleTodo={toggleTodo}
-          deleteTodo={deleteTodo}
-          updateTodo={updateTodo}
+        <ConfirmationModal
+          isOpen={confirmationModal.isOpen}
+          onClose={handleCancel}
+          onConfirm={handleConfirm}
+          title={confirmationModal.type === 'delete' ? "Delete Task?" : "Clear All Tasks?"}
+          message={
+            confirmationModal.type === 'delete'
+              ? "Are you sure you want to delete this task? This action cannot be undone."
+              : "Are you sure you want to clear all tasks? This action cannot be undone."
+          }
+          confirmJson={{
+            label: confirmationModal.type === 'delete' ? "Delete" : "Clear All",
+            variant: "danger"
+          }}
         />
       </div>
     </div>
